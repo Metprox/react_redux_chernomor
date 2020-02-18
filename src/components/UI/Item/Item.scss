@@ -1,0 +1,16 @@
+.Item {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    height: 60px;
+    margin-bottom: 10px;
+    padding: 0 10px 0 15px;
+    box-shadow: 0px 4px 26px rgba(0, 0, 0, 0.06);
+    border-radius: 6px;
+
+    &:last-of-type {
+        margin-bottom: 35px;
+    }
+}

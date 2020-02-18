@@ -1,0 +1,46 @@
+.Order {
+    display: block;
+}
+
+.wrap {
+    padding: 0 16px;
+}
+
+.item {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 19px;
+    height: 60px;
+    max-height: 60px;
+
+    & > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 45%;
+    }
+}
+
+.description {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 26px;
+
+    .background {
+        padding: 10px 20px 11px 22px;
+        background-color: #f0f1f4;
+        border-radius: 6px;
+        margin-right: 17px;
+    }
+
+    p {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: 0.2px;
+        color: #757f8c;
+    }
+}
