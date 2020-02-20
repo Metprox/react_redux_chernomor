@@ -25,8 +25,9 @@ const ServicesList = ({
 
     const saveRes = id => {
         const isResult = services.find(s => s._id === id);
-        isResult
-        addResult(isResult);
+        let copyResult = Object.create(isResult);
+        delete copyResult.additional;
+        addResult(copyResult);
     };
 
     return (

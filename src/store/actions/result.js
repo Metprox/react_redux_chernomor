@@ -11,6 +11,15 @@ export const deleteResult = result => {
 export const addCountResult = id => {
     return { type: types.ADD_COUNT_RESULT, payload: id };
 };
+
 export const deleteCountResult = id => {
     return { type: types.DELETE_COUNT_RESULT, payload: id };
+};
+
+export const addAdditionalResult = additional => {
+    return { type: types.ADD_COUNT_RESULT, payload: additional };
+};
+
+export const deleteAdditionalResult = additional => {
+    return { type: types.DELETE_COUNT_RESULT, payload: additional };
 };

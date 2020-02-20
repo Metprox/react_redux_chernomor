@@ -18,6 +18,16 @@ export const resultReducer = (state = initState, action) => {
                 ...state,
                 result: state.result.filter(r => r._id !== payload),
             };
+        case types.ADD_ADDITIONAL_RESULT:
+            return {
+                ...state,
+                result: [...state.result, payload],
+            };
+        case types.DELETE_ADDITIONAL_RESULT:
+            return {
+                ...state,
+                result: state.result.filter(r => r._id !== payload),
+            };
         case types.ADD_COUNT_RESULT:
             return {
                 ...state,
