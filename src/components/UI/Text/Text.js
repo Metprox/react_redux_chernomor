@@ -1,14 +1,14 @@
 import React from 'react';
 
-import cls from './Text.scss'
+import cls from './Text.scss';
 
-const Text = () => {
+const Text = ({ name, date }) => {
     return (
         <div className={cls.Text}>
             <p>
-                to: <strong>Rebecca Moore</strong>
+                to: <strong>{name}</strong>
             </p>
-            <p>19 January, 2019</p>
+            <p>{date}</p>
         </div>
     );
 };

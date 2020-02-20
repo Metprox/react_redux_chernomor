@@ -3,11 +3,11 @@ import Sum from '../Sum/Sum';
 
 import cls from './Total.scss';
 
-const Total = () => {
+const Total = ({ sum }) => {
     return (
         <div className={cls.Total}>
             <p>Total</p>
-            <Sum sum="$926.21" color="#000" />
+            <Sum sum={sum} color="#000" />
         </div>
     );
 };

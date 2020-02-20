@@ -1,20 +1,35 @@
 import React from 'react';
-import Header from '@/containers/Header/Header';
+import { connect } from 'react-redux';
+import Header from '@/components/UI/Header/Header';
 
 import cls from './Carts.scss';
-import List from '../List/List';
+import ServicesList from '../ServicesList/ServicesList';
 import Button from '../../components/UI/Button/Button';
 
-const Carts = () => {
+const Carts = ({ services, sum, result }) => {
     return (
         <div className={cls.Carts}>
-            <Header sum="$926.21" />
+            <Header sum={sum} />
             <div className={cls.wrap}>
-                <List />
-                <Button text="Buy" />
+                <ServicesList services={services} />
+                <Button
+                    text="Buy"
+                    to={result.length === 0 ? '#' : '/success'}
+                    onClick={() => {
+                        console.log(result);
+                    }}
+                />
             </div>
         </div>
     );
 };
 
-export default Carts;
+const mapStateToProps = state => {
+    return {
+        services: state.servicesReducer.services,
+        sum: +state.servicesReducer.sum,
+        result: state.resultReducer.result,
+    };
+};
+
+export default connect(mapStateToProps)(Carts);

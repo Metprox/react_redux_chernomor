@@ -2,8 +2,8 @@ import React from 'react';
 
 import cls from './Price.scss';
 
- const Price = () => {
-    return <p className={cls.Price}>$ 926.21</p>;
+const Price = ({ price }) => {
+    return <p className={cls.Price}>{price}</p>;
 };
 
 export default Price;

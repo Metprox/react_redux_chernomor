@@ -1,12 +1,12 @@
 import React from 'react';
-
+import { NavLink } from 'react-router-dom';
 import cls from './Button.scss';
 
-const Button = ({ text }) => {
+const Button = ({ text, to, onClick }) => {
     return (
-        <div className={cls.Button}>
+        <NavLink to={to ? to : '#'} className={cls.Button} onClick={onClick}>
             <span>{text}</span>
-        </div>
+        </NavLink>
     );
 };
 

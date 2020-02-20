@@ -1,0 +1,23 @@
+.OrderList {
+    padding: 0 16px;
+}
+
+.item {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 19px;
+    height: 60px;
+    max-height: 60px;
+}
+.leftRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 45%;
+}
+
+.checkbox {
+    margin-right: 12px;
+}

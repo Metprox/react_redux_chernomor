@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { testReducer } from './test';
+import { servicesReducer } from './services';
+import { resultReducer } from './result';
 
-export default combineReducers({ testReducer });
+export default combineReducers({ servicesReducer, resultReducer });
