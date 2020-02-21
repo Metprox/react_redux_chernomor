@@ -9,10 +9,16 @@ export const resultReducer = (state = initState, action) => {
     const { type, payload } = action;
     switch (type) {
         case types.ADD_RESULT:
-            console.log([...state.result, Object.assign({}, payload)]);
             return {
                 ...state,
-                result: [...state.result, Object.assign({}, payload)],
+                // result: [...state.result, Object.assign(state.result['additional'] = payload)],
+                result: state.result.map(r => {
+                    if (r._id === payload.id) {
+                        return Object.assign({}, r, (r['additional'] = payload.additional));
+                    } else {
+                        return Object.assign({}, r, Object.assign({}, ...r.additional, payload.additional));
+                    }
+                }),
             };
         case types.DELETE_RESULT:
             return {

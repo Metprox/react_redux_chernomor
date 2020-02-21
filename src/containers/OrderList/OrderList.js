@@ -6,19 +6,17 @@ import Checkbox from '../../components/UI/Checkbox/Checkbox';
 import Price from '../../components/UI/Price/Price';
 import cls from './OrderList.scss';
 import { orderAddSum, orderDeleteSum } from '@/store/actions/services';
+import { addResult } from '@/store/actions/result';
 import { onAddSum, onRemoveSum } from '@/tools/custom/Functions.js';
 
-export const OrderList = ({ services, additional, orderAddSum, orderDeleteSum }) => {
+export const OrderList = ({ additional, orderAddSum, orderDeleteSum, addResult }) => {
     const [checkIds, setCheckIds] = useState([]);
     const { id } = useParams();
 
     const addToRedult = additionId => {
-        const service = services.find(s => s._id === id);
-        console.log('service', service);
-        const addition = service.find(a => a._id === additionId);
-        let copyAddition = Object.assign({}, addition);
-        console.log(copyAddition);
-        addResult(copyAddition);
+        const adit = additional.find(a => a._id === additionId);
+        let copyAddition = Object.assign({}, adit);
+        addResult(copyAddition, id);
     };
 
     return (
@@ -52,17 +50,12 @@ export const OrderList = ({ services, additional, orderAddSum, orderDeleteSum })
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        services: state.servicesReducer.services,
-    };
-};
-
 const mapDispatchToProps = dispatch => {
     return {
         orderAddSum: sum => dispatch(orderAddSum(sum)),
         orderDeleteSum: sum => dispatch(orderDeleteSum(sum)),
+        addResult: (additional, id) => dispatch(addResult(additional, id)),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderList);
+export default connect(null, mapDispatchToProps)(OrderList);
