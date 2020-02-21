@@ -9,9 +9,10 @@ export const resultReducer = (state = initState, action) => {
     const { type, payload } = action;
     switch (type) {
         case types.ADD_RESULT:
+            console.log([...state.result, Object.assign({}, payload)]);
             return {
                 ...state,
-                result: [...state.result, payload],
+                result: [...state.result, Object.assign({}, payload)],
             };
         case types.DELETE_RESULT:
             return {
