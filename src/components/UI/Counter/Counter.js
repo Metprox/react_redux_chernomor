@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { onAddSum, onRemoveSum } from '@/tools/custom/Functions.js';
 
 import cls from './Counter.scss';
-import { addCountResult, deleteCountResult } from '@/store/actions/result';
 
-const Counter = ({ price, onIncrement, onDecrement, addCountResult, deleteCountResult }) => {
-    const [count, setCount] = useState(1);
-
+const Counter = ({ price, count, addSum, deleteSum, onIncrement, onDecrement }) => {
     const increment = () => {
-        setCount(count + 1);
-        onAddSum(price, onIncrement);
-        addCountResult();
+        onAddSum(price, addSum);
+        onIncrement();
     };
 
     const decrement = () => {
-        if (count === 1) {
+        if (count === 0) {
             return;
         }
-        setCount(count - 1);
-        onRemoveSum(price, onDecrement);
-        deleteCountResult();
+        onRemoveSum(price, deleteSum);
+        onDecrement();
     };
 
     return (

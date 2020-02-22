@@ -11,7 +11,7 @@ const MainRouter = ({ result }) => {
             <Switch>
                 <Route path="/" exact component={Carts} />
                 <Route path="/order/:id" exact component={Order} />
-                {!!result.length === 0 ? null : <Route path="/success" exact component={Success} />}
+                {result.length === 0 ? null : <Route path="/success" exact component={Success} />}
                 <Redirect to="/" />
             </Switch>
         </Fragment>

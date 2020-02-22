@@ -1,4 +1,4 @@
-const utilMixin = price => {
+export const utilMixin = price => {
     let currency = +price.split('$')[1];
     currency = +currency.toFixed(2);
     return currency;

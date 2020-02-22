@@ -24,3 +24,26 @@ export const orderDeleteSum = sum => {
     return { type: types.ORDER_DELETE_SUM, payload: sum };
 };
 
+export const setCheckedOfService = serviceId => {
+    return { type: types.SET_CHECKED_OF_SERVICE, payload: serviceId };
+};
+
+export const deleteCheckedOfService = serviceId => {
+    return { type: types.DELETE_CHECKED_OF_SERVICE, payload: serviceId };
+};
+
+export const setCountOfService = serviceId => {
+    return { type: types.SET_COUNT_OF_SERVICE, payload: serviceId };
+};
+
+export const deleteCountOfService = serviceId => {
+    return { type: types.DELETE_COUNT_OF_SERVICE, payload: serviceId };
+};
+
+export const setAdditionalOfChecked = (serviceId, additionalId) => {
+    return { type: types.SET_ADDITIONAL_OF_CHECKED, payload: { serviceId, additionalId } };
+};
+
+export const deleteAdditionalOfChecked = (serviceId, additionalId) => {
+    return { type: types.DELETE_ADDITIONAL_OF_CHECKED, payload: { serviceId, additionalId } };
+};

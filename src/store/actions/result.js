@@ -1,7 +1,7 @@
 import * as types from './types';
 
-export const addResult = (additional, id) => {
-    return { type: types.ADD_RESULT, payload: { id, additional } };
+export const addResult = service => {
+    return { type: types.ADD_RESULT, payload: service };
 };
 
 export const deleteResult = result => {
@@ -16,10 +16,10 @@ export const deleteCountResult = id => {
     return { type: types.DELETE_COUNT_RESULT, payload: id };
 };
 
-export const addAdditionalResult = additional => {
-    return { type: types.ADD_COUNT_RESULT, payload: additional };
+export const addAdditionalResult = (additional, serviceId) => {
+    return { type: types.ADD_ADDITIONAL_RESULT, payload: { additional, serviceId } };
 };
 
-export const deleteAdditionalResult = additional => {
-    return { type: types.DELETE_COUNT_RESULT, payload: additional };
+export const deleteAdditionalResult = (serviceId, additionalId) => {
+    return { type: types.DELETE_ADDITIONAL_RESULT, payload: { serviceId, additionalId } };
 };

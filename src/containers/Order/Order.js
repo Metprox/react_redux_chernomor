@@ -7,17 +7,20 @@ import Button from '../../components/UI/Button/Button';
 import Sum from '../../components/UI/Sum/Sum';
 import OrderList from '../OrderList/OrderList';
 import { setSum, orderClearSum } from '@/store/actions/services';
+import { utilMixin } from '@/tools/custom/Functions.js';
 
 import cls from './Order.scss';
 
 const Order = ({ services, sum, order_sum, setSum, orderClearSum }) => {
     const { id } = useParams();
+    const [servicePrice, setServicePrice] = useState('');
     const [additional, setAdditional] = useState([]);
 
     useEffect(() => {
         let service = services.find(s => s._id === id);
         setAdditional(service.additional);
-    }, [id]);
+        setServicePrice(utilMixin(service.price));
+    }, [id, servicePrice, services]);
 
     return (
         <div className={cls.Order}>
@@ -25,7 +28,7 @@ const Order = ({ services, sum, order_sum, setSum, orderClearSum }) => {
             <div className={cls.wrap}>
                 <div className={cls.description}>
                     <div className={cls.background}>
-                        <Sum sum={order_sum} />
+                        <Sum sum={servicePrice} />
                     </div>
                     <p>
                         {additional.map((txt, i) => (
@@ -37,7 +40,7 @@ const Order = ({ services, sum, order_sum, setSum, orderClearSum }) => {
                     </p>
                 </div>
                 <OrderList additional={additional} />
-                <Total sum={sum} />
+                <Total sum={servicePrice} />
                 <Button
                     text="Confirm"
                     to="/"

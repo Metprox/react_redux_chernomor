@@ -6,7 +6,15 @@ import Text from '@/components/UI/Text/Text';
 import Counter from '@/components/UI/Counter/Counter';
 import Price from '@/components/UI/Price/Price';
 import Arrow from '@/components/UI/Arrow/Arrow';
-import { addSum, deleteSum, orderAddSum } from '@/store/actions/services';
+import {
+    addSum,
+    deleteSum,
+    orderAddSum,
+    setCheckedOfService,
+    deleteCheckedOfService,
+    setCountOfService,
+    deleteCountOfService,
+} from '@/store/actions/services';
 import { addResult, deleteResult, addCountResult, deleteCountResult } from '@/store/actions/result';
 import { onAddSum, onRemoveSum } from '@/tools/custom/Functions.js';
 
@@ -20,14 +28,18 @@ const ServicesList = ({
     deleteResult,
     addCountResult,
     deleteCountResult,
+    setCheckedOfService,
+    deleteCheckedOfService,
+    setCountOfService,
+    deleteCountOfService,
 }) => {
     const [checkIds, setCheckIds] = useState([]);
 
     const saveRes = id => {
-        const isResult = services.find(s => s._id === id);
-        let copyResult = Object.assign({}, isResult);
-        delete copyResult.additional;
-        addResult(copyResult);
+        const service = services.find(s => s._id === id);
+        let copyService = Object.assign({}, service);
+        delete copyService.additional;
+        addResult(copyService);
     };
 
     return (
@@ -38,15 +50,20 @@ const ServicesList = ({
                         <div className={cls.checkbox}>
                             <Checkbox
                                 id={s._id}
+                                checked={!!s.checked}
                                 onChange={() => {
-                                    if (checkIds.includes(s._id)) {
-                                        onRemoveSum(s.price, deleteSum, setCheckIds(checkIds.filter(i => i !== s._id)));
+                                    if (!!s.checked) {
+                                        onRemoveSum(s.price, deleteSum);
+                                        // onRemoveSum(s.price, deleteSum, setCheckIds(checkIds.filter(i => i !== s._id)));
                                         deleteResult(s._id);
                                         deleteCountResult(s._id, 1);
-                                    } else {
-                                        saveRes(s._id);
-                                        onAddSum(s.price, addSum, setCheckIds([...checkIds, s._id]));
+                                        deleteCheckedOfService(s._id);
+                                        return;
                                     }
+                                    saveRes(s._id);
+                                    onAddSum(s.price, addSum);
+                                    // onAddSum(s.price, addSum, setCheckIds([...checkIds, s._id]));
+                                    setCheckedOfService(s._id);
                                 }}
                             />
                         </div>
@@ -55,10 +72,19 @@ const ServicesList = ({
                     <div className={cls.rightRow}>
                         <Counter
                             price={s.price}
-                            onIncrement={addSum}
-                            onDecrement={deleteSum}
-                            addCountResult={() => addCountResult(s._id)}
-                            deleteCountResult={() => deleteCountResult(s._id)}
+                            count={!!s.count ? s.count : 0}
+                            addSum={addSum}
+                            deleteSum={deleteSum}
+                            onIncrement={() => {
+                                saveRes(s._id);
+                                addCountResult(s._id);
+                                setCountOfService(s._id);
+                            }}
+                            onDecrement={() => {
+                                deleteResult(s._id);
+                                deleteCountResult(s._id);
+                                deleteCountOfService(s._id);
+                            }}
                         />
                         <div className={cls.wrapPrice}>
                             <Price price={s.price} />
@@ -67,7 +93,6 @@ const ServicesList = ({
                             id={s._id}
                             onClick={() => {
                                 orderAddSum(sum);
-                                localStorage.setItem('servicesId', JSON.stringify(checkIds));
                             }}
                         />
                     </div>
@@ -77,23 +102,23 @@ const ServicesList = ({
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        sum: state.servicesReducer.sum,
-        result: state.resultReducer.result,
-    };
-};
+const mapStateToProps = state => ({
+    sum: state.servicesReducer.sum,
+    result: state.resultReducer.result,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        addSum: sum => dispatch(addSum(sum)),
-        deleteSum: sum => dispatch(deleteSum(sum)),
-        orderAddSum: sum => dispatch(orderAddSum(sum)),
-        addResult: result => dispatch(addResult(result)),
-        deleteResult: result => dispatch(deleteResult(result)),
-        deleteCountResult: id => dispatch(deleteCountResult(id)),
-        addCountResult: id => dispatch(addCountResult(id)),
-    };
-};
+const mapDispatchToProps = dispatch => ({
+    addSum: sum => dispatch(addSum(sum)),
+    deleteSum: sum => dispatch(deleteSum(sum)),
+    orderAddSum: sum => dispatch(orderAddSum(sum)),
+    addResult: result => dispatch(addResult(result)),
+    deleteResult: result => dispatch(deleteResult(result)),
+    deleteCountResult: id => dispatch(deleteCountResult(id)),
+    addCountResult: id => dispatch(addCountResult(id)),
+    setCheckedOfService: id => dispatch(setCheckedOfService(id)),
+    deleteCheckedOfService: id => dispatch(deleteCheckedOfService(id)),
+    setCountOfService: id => dispatch(setCountOfService(id)),
+    deleteCountOfService: id => dispatch(deleteCountOfService(id)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ServicesList);

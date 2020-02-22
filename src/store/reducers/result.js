@@ -1,5 +1,4 @@
 import * as types from '../actions/types';
-import services from '../../../static/todos.json';
 
 const initState = {
     result: [],
@@ -9,17 +8,15 @@ export const resultReducer = (state = initState, action) => {
     const { type, payload } = action;
     switch (type) {
         case types.ADD_RESULT:
-            return {
-                ...state,
-                // result: [...state.result, Object.assign(state.result['additional'] = payload)],
-                result: state.result.map(r => {
-                    if (r._id === payload.id) {
-                        return Object.assign({}, r, (r['additional'] = payload.additional));
-                    } else {
-                        return Object.assign({}, r, Object.assign({}, ...r.additional, payload.additional));
-                    }
-                }),
-            };
+            if (state.result.length === 0) {
+                return { ...state, result: [...state.result, payload] };
+            } else {
+                let newResult = state.result.filter(r => r._id !== payload._id);
+                return {
+                    ...state,
+                    result: [...newResult, payload],
+                };
+            }
         case types.DELETE_RESULT:
             return {
                 ...state,
@@ -28,23 +25,45 @@ export const resultReducer = (state = initState, action) => {
         case types.ADD_ADDITIONAL_RESULT:
             return {
                 ...state,
-                result: [...state.result, payload],
+                result: state.result.map(r => {
+                    if (r._id === payload.serviceId && !!r.additional === false) {
+                        return { ...r, additional: [payload.additional] };
+                    } else if (r._id === payload.serviceId && !!r.additional === true) {
+                        return {
+                            ...r,
+                            additional: [...r.additional, { ...payload.additional }],
+                        };
+                    } else {
+                        return { ...r };
+                    }
+                }),
             };
         case types.DELETE_ADDITIONAL_RESULT:
             return {
                 ...state,
-                result: state.result.filter(r => r._id !== payload),
+                result: state.result.map(r => {
+                    if (r._id === payload.serviceId) {
+                        return {
+                            ...r,
+                            additional: r.additional.filter(a => a._id !== payload.additionalId),
+                        };
+                    } else {
+                        return {
+                            ...r,
+                        };
+                    }
+                }),
             };
         case types.ADD_COUNT_RESULT:
             return {
                 ...state,
                 result: state.result.map(r => {
                     if (r._id === payload && !!r.count === false) {
-                        return Object.assign(r, (r['count'] = 1));
+                        return Object.assign({}, r, (r['count'] = 1));
                     } else if (r._id !== payload) {
                         return r;
                     } else {
-                        return Object.assign(r, (r.count += 1));
+                        return Object.assign({}, r, (r.count += 1));
                     }
                 }),
             };
