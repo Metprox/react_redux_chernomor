@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import cls from './ServicesList.scss';
 import Checkbox from '@/components/UI/Checkbox/Checkbox';
@@ -33,8 +33,6 @@ const ServicesList = ({
     setCountOfService,
     deleteCountOfService,
 }) => {
-    const [checkIds, setCheckIds] = useState([]);
-
     const saveRes = id => {
         const service = services.find(s => s._id === id);
         let copyService = Object.assign({}, service);
@@ -54,7 +52,6 @@ const ServicesList = ({
                                 onChange={() => {
                                     if (!!s.checked) {
                                         onRemoveSum(s.price, deleteSum);
-                                        // onRemoveSum(s.price, deleteSum, setCheckIds(checkIds.filter(i => i !== s._id)));
                                         deleteResult(s._id);
                                         deleteCountResult(s._id, 1);
                                         deleteCheckedOfService(s._id);
@@ -62,7 +59,6 @@ const ServicesList = ({
                                     }
                                     saveRes(s._id);
                                     onAddSum(s.price, addSum);
-                                    // onAddSum(s.price, addSum, setCheckIds([...checkIds, s._id]));
                                     setCheckedOfService(s._id);
                                 }}
                             />

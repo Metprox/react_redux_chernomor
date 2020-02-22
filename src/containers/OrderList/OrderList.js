@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Text from '../../components/UI/Text/Text';
@@ -10,6 +10,8 @@ import {
     orderDeleteSum,
     setAdditionalOfChecked,
     deleteAdditionalOfChecked,
+    setAdditionalOfTotal,
+    deleteAdditionalOfTotal,
 } from '@/store/actions/services';
 import { addAdditionalResult, deleteAdditionalResult } from '@/store/actions/result';
 import { onAddSum, onRemoveSum } from '@/tools/custom/Functions.js';
@@ -22,6 +24,8 @@ export const OrderList = ({
     deleteAdditionalResult,
     setAdditionalOfChecked,
     deleteAdditionalOfChecked,
+    setAdditionalOfTotal,
+    deleteAdditionalOfTotal,
 }) => {
     const [checkIds, setCheckIds] = useState([]);
     const { id } = useParams();
@@ -31,11 +35,6 @@ export const OrderList = ({
         const copyAddition = Object.assign({}, addition);
         addAdditionalResult(copyAddition, id);
     };
-
-    useEffect(() => {
-        console.log('OrderList Render');
-        console.log(additional);
-    }, [additional]);
 
     return (
         <ul className={cls.OrderList}>
@@ -47,7 +46,8 @@ export const OrderList = ({
                                 id={adit._id}
                                 checked={!!adit.checked}
                                 onChange={() => {
-                                    if (checkIds.includes(adit._id)) {
+                                    if (!!adit.checked) {
+                                        deleteAdditionalOfTotal(id, adit.price);
                                         deleteAdditionalOfChecked(id, adit._id);
                                         onRemoveSum(
                                             adit.price,
@@ -56,6 +56,7 @@ export const OrderList = ({
                                         );
                                         deleteAdditionalResult(id, adit._id);
                                     } else {
+                                        setAdditionalOfTotal(id, adit.price);
                                         setAdditionalOfChecked(id, adit._id);
                                         onAddSum(adit.price, orderAddSum, setCheckIds([...checkIds, adit._id]));
                                         addToRedult(adit._id);
@@ -80,6 +81,9 @@ const mapDispatchToProps = dispatch => ({
     setAdditionalOfChecked: (serviceId, additionalId) => dispatch(setAdditionalOfChecked(serviceId, additionalId)),
     deleteAdditionalOfChecked: (serviceId, additionalId) =>
         dispatch(deleteAdditionalOfChecked(serviceId, additionalId)),
+    setAdditionalOfTotal: (serviceId, additionalPrice) => dispatch(setAdditionalOfTotal(serviceId, additionalPrice)),
+    deleteAdditionalOfTotal: (serviceId, additionalPrice) =>
+        dispatch(deleteAdditionalOfTotal(serviceId, additionalPrice)),
 });
 
 export default connect(null, mapDispatchToProps)(OrderList);

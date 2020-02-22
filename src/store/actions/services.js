@@ -47,3 +47,11 @@ export const setAdditionalOfChecked = (serviceId, additionalId) => {
 export const deleteAdditionalOfChecked = (serviceId, additionalId) => {
     return { type: types.DELETE_ADDITIONAL_OF_CHECKED, payload: { serviceId, additionalId } };
 };
+
+export const setAdditionalOfTotal = (serviceId, additionalPrice) => {
+    return { type: types.SET_ADDITIONAL_OF_TOTAL, payload: { serviceId, additionalPrice } };
+};
+
+export const deleteAdditionalOfTotal = (serviceId, additionalPrice) => {
+    return { type: types.DELETE_ADDITIONAL_OF_TOTAL, payload: { serviceId, additionalPrice } };
+};
