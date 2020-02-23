@@ -6,11 +6,10 @@ import Total from '../../components/UI/Total/Total';
 import Button from '../../components/UI/Button/Button';
 import Sum from '../../components/UI/Sum/Sum';
 import AdditionalList from '../AdditionalList/AdditionalList';
-import { setSum } from '@/store/actions/services';
 
 import cls from './Additional.scss';
 
-const Additional = ({ services, setSum }) => {
+const Additional = ({ services }) => {
     const { id } = useParams();
     const [additional, setAdditional] = useState([]);
     const [servicePrice, setServicePrice] = useState('');
@@ -42,29 +41,14 @@ const Additional = ({ services, setSum }) => {
                 </div>
                 <AdditionalList additional={additional} />
                 <Total sum={serviceTotalPrice || servicePrice} />
-                <Button
-                    text="Confirm"
-                    to="/"
-                    onClick={() => {
-                        console.log('confirm')
-                    }}
-                />
+                <Button text="Confirm" to="/" />
             </div>
         </div>
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        services: state.servicesReducer.services,
-        sum: state.servicesReducer.sum,
-    };
-};
+const mapStateToProps = state => ({
+    services: state.servicesReducer.services,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setSum: sum => dispatch(setSum(sum)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Additional);
+export default connect(mapStateToProps)(Additional);

@@ -11,17 +11,15 @@ const MainRouter = ({ result }) => {
             <Switch>
                 <Route path="/" exact component={Services} />
                 <Route path="/order/:id" exact component={Additional} />
-                {result.length >= 2 ? <Route path="/success" exact component={Success} /> : null}
+                {result.length >= 1 ? <Route path="/success" exact component={Success} /> : null}
                 <Redirect to="/" />
             </Switch>
         </Fragment>
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        result: state.resultReducer.result,
-    };
-};
+const mapStateToProps = state => ({
+    result: state.resultReducer.result,
+});
 
 export default connect(mapStateToProps)(MainRouter);

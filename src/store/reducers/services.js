@@ -4,27 +4,11 @@ import { utilMixin } from '../../tools/custom/Functions.js';
 
 const initState = {
     services,
-    sum: 0,
 };
 
 export const servicesReducer = (state = initState, action) => {
     const { type, payload } = action;
     switch (type) {
-        case types.ADD_SUM:
-            return {
-                ...state,
-                sum: state.sum + payload,
-            };
-        case types.DELETE_SUM:
-            return {
-                ...state,
-                sum: state.sum - payload,
-            };
-        case types.SET_SUM:
-            return {
-                ...state,
-                sum: (state.sum = payload),
-            };
         case types.SET_CHECKED_OF_SERVICE:
             return {
                 ...state,
@@ -106,12 +90,12 @@ export const servicesReducer = (state = initState, action) => {
                     return { ...s };
                 }),
             };
-        case types.SET_ADDITIONAL_OF_TOTAL:
+        case types.SET_TOTAL_OF_SERVICE:
             return {
                 ...state,
                 services: state.services.map(s => {
                     if (s._id === payload.serviceId) {
-                        let additPrice = utilMixin(payload.additionalPrice);
+                        let additPrice = utilMixin(payload.serviceTotalPrice);
                         if (!!s.totalPrice === false) {
                             let servicePrice = utilMixin(s.price);
                             let resultPrice = servicePrice + additPrice;
@@ -131,12 +115,12 @@ export const servicesReducer = (state = initState, action) => {
                     return { ...s };
                 }),
             };
-        case types.DELETE_ADDITIONAL_OF_TOTAL:
+        case types.DELETE_TOTAL_OF_SERVICE:
             return {
                 ...state,
                 services: state.services.map(s => {
                     if (s._id === payload.serviceId) {
-                        let additPrice = utilMixin(payload.additionalPrice);
+                        let additPrice = utilMixin(payload.serviceTotalPrice);
                         if (!!s.totalPrice === false) {
                             let servicePrice = utilMixin(s.price);
                             let resultPrice = servicePrice - additPrice;
@@ -152,6 +136,20 @@ export const servicesReducer = (state = initState, action) => {
                                 totalPrice: `$${resultPrice.toFixed(2)}`,
                             };
                         }
+                    }
+                    return { ...s };
+                }),
+            };
+        case types.DEFAULT_TOTAL_OF_SERVICE:
+            return {
+                ...state,
+                services: state.services.map(s => {
+                    if (s._id === payload.serviceId) {
+                        let price = utilMixin(payload.serviceTotalPrice);
+                        return {
+                            ...s,
+                            totalPrice: `$${price.toFixed(2)}`,
+                        };
                     }
                     return { ...s };
                 }),

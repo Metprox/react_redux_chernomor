@@ -1,4 +1,5 @@
 import * as types from '../actions/types';
+import { utilMixin } from '../../tools/custom/Functions.js';
 
 const initState = {
     result: [],
@@ -80,6 +81,70 @@ export const resultReducer = (state = initState, action) => {
                     }
                 }),
             };
+        case types.SET_TOTAL_OF_RESULT:
+            return {
+                ...state,
+                result: state.result.map(r => {
+                    if (r._id === payload.serviceId) {
+                        let additPrice = utilMixin(payload.serviceTotalPrice);
+                        if (!!r.totalPrice === false) {
+                            let servicePrice = utilMixin(r.price);
+                            let resultPrice = servicePrice + additPrice;
+                            return {
+                                ...r,
+                                totalPrice: `$${resultPrice.toFixed(2)}`,
+                            };
+                        } else {
+                            let servicePrice = utilMixin(r.totalPrice);
+                            let resultPrice = servicePrice + additPrice;
+                            return {
+                                ...r,
+                                totalPrice: `$${resultPrice.toFixed(2)}`,
+                            };
+                        }
+                    }
+                    return { ...r };
+                }),
+            };
+        case types.DELETE_TOTAL_OF_RESULT:
+            return {
+                ...state,
+                result: state.result.map(r => {
+                    if (r._id === payload.serviceId) {
+                        let additPrice = utilMixin(payload.serviceTotalPrice);
+                        if (!!r.totalPrice === false) {
+                            let servicePrice = utilMixin(r.price);
+                            let resultPrice = servicePrice - additPrice;
+                            return {
+                                ...r,
+                                totalPrice: `$${resultPrice.toFixed(2)}`,
+                            };
+                        } else {
+                            let servicePrice = utilMixin(r.totalPrice);
+                            let resultPrice = servicePrice - additPrice;
+                            return {
+                                ...r,
+                                totalPrice: `$${resultPrice.toFixed(2)}`,
+                            };
+                        }
+                    }
+                    return { ...r };
+                }),
+            };
+            case types.DEFAULT_TOTAL_OF_RESULT:
+                return {
+                    ...state,
+                    result: state.result.map(r => {
+                        if (r._id === payload.serviceId) {
+                            let price = utilMixin(payload.serviceTotalPrice);
+                            return {
+                                ...r,
+                                totalPrice: `$${price.toFixed(2)}`,
+                            };
+                        }
+                        return { ...r };
+                    }),
+                };
         default:
             return state;
     }

@@ -14,7 +14,7 @@ const Services = ({ services, sum, result }) => {
                 <ServicesList services={services} />
                 <Button
                     text="Buy"
-                    to={result.length >= 2 ? '/success' : '#'}
+                    to={result.length >= 1 ? '/success' : '#'}
                     onClick={() => {
                         console.log(result);
                     }}
@@ -24,12 +24,10 @@ const Services = ({ services, sum, result }) => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        services: state.servicesReducer.services,
-        sum: +state.servicesReducer.sum,
-        result: state.resultReducer.result,
-    };
-};
+const mapStateToProps = state => ({
+    services: state.servicesReducer.services,
+    sum: +state.sumReducer.sum,
+    result: state.resultReducer.result,
+});
 
 export default connect(mapStateToProps)(Services);

@@ -1,17 +1,5 @@
 import * as types from './types';
 
-export const addSum = sum => {
-    return { type: types.ADD_SUM, payload: sum };
-};
-
-export const deleteSum = sum => {
-    return { type: types.DELETE_SUM, payload: sum };
-};
-
-export const setSum = sum => {
-    return { type: types.SET_SUM, payload: sum };
-};
-
 export const setCheckedOfService = serviceId => {
     return { type: types.SET_CHECKED_OF_SERVICE, payload: serviceId };
 };
@@ -36,16 +24,20 @@ export const deleteAdditionalOfChecked = (serviceId, additionalId) => {
     return { type: types.DELETE_ADDITIONAL_OF_CHECKED, payload: { serviceId, additionalId } };
 };
 
-export const setAdditionalOfTotal = (serviceId, additionalPrice) => {
-    return { type: types.SET_ADDITIONAL_OF_TOTAL, payload: { serviceId, additionalPrice } };
+export const setTotalOfService = (serviceId, serviceTotalPrice) => {
+    return { type: types.SET_TOTAL_OF_SERVICE, payload: { serviceId, serviceTotalPrice } };
 };
 
-export const deleteAdditionalOfTotal = (serviceId, additionalPrice) => {
+export const deleteTotalOfService = (serviceId, serviceTotalPrice) => {
     return {
-        type: types.DELETE_ADDITIONAL_OF_TOTAL,
+        type: types.DELETE_TOTAL_OF_SERVICE,
         payload: {
             serviceId,
-            additionalPrice,
+            serviceTotalPrice,
         },
     };
+};
+
+export const defaultTotalOfService = (serviceId, serviceTotalPrice) => {
+    return { type: types.DEFAULT_TOTAL_OF_SERVICE, payload: { serviceId, serviceTotalPrice } };
 };

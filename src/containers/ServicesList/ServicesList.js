@@ -7,14 +7,24 @@ import Counter from '@/components/UI/Counter/Counter';
 import Price from '@/components/UI/Price/Price';
 import Arrow from '@/components/UI/Arrow/Arrow';
 import {
-    addSum,
-    deleteSum,
     setCheckedOfService,
     deleteCheckedOfService,
     setCountOfService,
     deleteCountOfService,
+    setTotalOfService,
+    deleteTotalOfService,
+    defaultTotalOfService,
 } from '@/store/actions/services';
-import { addResult, deleteResult, addCountResult, deleteCountResult } from '@/store/actions/result';
+import { addSum, deleteSum } from '@/store/actions/sum';
+import {
+    addResult,
+    deleteResult,
+    addCountResult,
+    deleteCountResult,
+    setTotalOfResult,
+    deleteTotalOfResult,
+    defaultTotalOfResult,
+} from '@/store/actions/result';
 import { onAddSum, onRemoveSum } from '@/tools/custom/Functions.js';
 
 const ServicesList = ({
@@ -29,6 +39,12 @@ const ServicesList = ({
     deleteCheckedOfService,
     setCountOfService,
     deleteCountOfService,
+    setTotalOfService,
+    deleteTotalOfService,
+    setTotalOfResult,
+    deleteTotalOfResult,
+    defaultTotalOfService,
+    defaultTotalOfResult,
 }) => {
     const saveRes = id => {
         const service = services.find(s => s._id === id);
@@ -48,15 +64,30 @@ const ServicesList = ({
                                 checked={!!s.checked}
                                 onChange={() => {
                                     if (!!s.checked) {
-                                        onRemoveSum(s.price, deleteSum);
+                                        if (s.count !== 0) {
+                                            onRemoveSum(s.price, deleteSum);
+                                        }
                                         deleteResult(s._id);
                                         deleteCountResult(s._id, 1);
                                         deleteCheckedOfService(s._id);
+                                        deleteTotalOfService(s._id, s.price);
+                                        deleteTotalOfResult(s._id, s.price);
+                                        deleteCountOfService(s._id);
+                                        deleteCountResult(s._id);
                                         return;
                                     }
                                     saveRes(s._id);
                                     onAddSum(s.price, addSum);
                                     setCheckedOfService(s._id);
+                                    addCountResult(s._id);
+                                    setCountOfService(s._id);
+                                    if (s.count === true || s.count >= 1) {
+                                        setTotalOfService(s._id, s.price);
+                                        setTotalOfResult(s._id, s.price);
+                                    } else {
+                                        defaultTotalOfService(s._id, s.price);
+                                        defaultTotalOfResult(s._id, s.price);
+                                    }
                                 }}
                             />
                         </div>
@@ -72,13 +103,22 @@ const ServicesList = ({
                                 saveRes(s._id);
                                 addCountResult(s._id);
                                 setCountOfService(s._id);
+                                if (s.count === true || s.count >= 1) {
+                                    setTotalOfService(s._id, s.price);
+                                    setTotalOfResult(s._id, s.price);
+                                } else {
+                                    defaultTotalOfService(s._id, s.price);
+                                    defaultTotalOfResult(s._id, s.price);
+                                }
                             }}
                             onDecrement={() => {
-                                if (!!s.checked === false) {
+                                if (!!s.checked === false && s.count === 0) {
                                     deleteResult(s._id);
                                 }
                                 deleteCountOfService(s._id);
                                 deleteCountResult(s._id);
+                                deleteTotalOfService(s._id, s.price);
+                                deleteTotalOfResult(s._id, s.price);
                             }}
                         />
                         <div className={cls.wrapPrice}>
@@ -93,7 +133,6 @@ const ServicesList = ({
 };
 
 const mapStateToProps = state => ({
-    sum: state.servicesReducer.sum,
     result: state.resultReducer.result,
 });
 
@@ -108,6 +147,15 @@ const mapDispatchToProps = dispatch => ({
     deleteCheckedOfService: id => dispatch(deleteCheckedOfService(id)),
     setCountOfService: id => dispatch(setCountOfService(id)),
     deleteCountOfService: id => dispatch(deleteCountOfService(id)),
+    setTotalOfService: (serviceId, serviceTotalPrice) => dispatch(setTotalOfService(serviceId, serviceTotalPrice)),
+    deleteTotalOfService: (serviceId, serviceTotalPrice) =>
+        dispatch(deleteTotalOfService(serviceId, serviceTotalPrice)),
+    setTotalOfResult: (serviceId, serviceTotalPrice) => dispatch(setTotalOfResult(serviceId, serviceTotalPrice)),
+    deleteTotalOfResult: (serviceId, serviceTotalPrice) => dispatch(deleteTotalOfResult(serviceId, serviceTotalPrice)),
+    defaultTotalOfService: (serviceId, serviceTotalPrice) =>
+        dispatch(defaultTotalOfService(serviceId, serviceTotalPrice)),
+    defaultTotalOfResult: (serviceId, serviceTotalPrice) =>
+        dispatch(defaultTotalOfResult(serviceId, serviceTotalPrice)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ServicesList);
