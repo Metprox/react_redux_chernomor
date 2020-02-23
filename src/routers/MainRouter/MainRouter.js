@@ -1,17 +1,17 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import Carts from './../../containers/Carts/Carts';
-import Order from './../../containers/Order/Order';
+import Services from './../../containers/Services/Services';
+import Additional from './../../containers/Additional/Additional';
 import Success from './../../components/UI/Success/Success';
 
 const MainRouter = ({ result }) => {
     return (
         <Fragment>
             <Switch>
-                <Route path="/" exact component={Carts} />
-                <Route path="/order/:id" exact component={Order} />
-                {result.length === 0 ? null : <Route path="/success" exact component={Success} />}
+                <Route path="/" exact component={Services} />
+                <Route path="/order/:id" exact component={Additional} />
+                {result.length >= 2 ? <Route path="/success" exact component={Success} /> : null}
                 <Redirect to="/" />
             </Switch>
         </Fragment>

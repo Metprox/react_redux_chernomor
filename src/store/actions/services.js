@@ -12,18 +12,6 @@ export const setSum = sum => {
     return { type: types.SET_SUM, payload: sum };
 };
 
-export const orderClearSum = sum => {
-    return { type: types.ORDER_CLEAR_SUM, payload: sum };
-};
-
-export const orderAddSum = sum => {
-    return { type: types.ORDER_ADD_SUM, payload: sum };
-};
-
-export const orderDeleteSum = sum => {
-    return { type: types.ORDER_DELETE_SUM, payload: sum };
-};
-
 export const setCheckedOfService = serviceId => {
     return { type: types.SET_CHECKED_OF_SERVICE, payload: serviceId };
 };
@@ -53,5 +41,11 @@ export const setAdditionalOfTotal = (serviceId, additionalPrice) => {
 };
 
 export const deleteAdditionalOfTotal = (serviceId, additionalPrice) => {
-    return { type: types.DELETE_ADDITIONAL_OF_TOTAL, payload: { serviceId, additionalPrice } };
+    return {
+        type: types.DELETE_ADDITIONAL_OF_TOTAL,
+        payload: {
+            serviceId,
+            additionalPrice,
+        },
+    };
 };

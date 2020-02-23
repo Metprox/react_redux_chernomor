@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from '@/components/UI/Header/Header';
-
-import cls from './Carts.scss';
 import ServicesList from '../ServicesList/ServicesList';
 import Button from '../../components/UI/Button/Button';
 
-const Carts = ({ services, sum, result }) => {
+import cls from './Services.scss';
+
+const Services = ({ services, sum, result }) => {
     return (
-        <div className={cls.Carts}>
+        <div className={cls.Services}>
             <Header sum={sum} />
             <div className={cls.wrap}>
                 <ServicesList services={services} />
                 <Button
                     text="Buy"
-                    to={result.length === 0 ? '#' : '/success'}
+                    to={result.length >= 2 ? '/success' : '#'}
                     onClick={() => {
                         console.log(result);
                     }}
@@ -32,4 +32,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(Carts);
+export default connect(mapStateToProps)(Services);

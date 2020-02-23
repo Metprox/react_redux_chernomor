@@ -5,7 +5,6 @@ import { utilMixin } from '../../tools/custom/Functions.js';
 const initState = {
     services,
     sum: 0,
-    order_sum: 0,
 };
 
 export const servicesReducer = (state = initState, action) => {
@@ -25,21 +24,6 @@ export const servicesReducer = (state = initState, action) => {
             return {
                 ...state,
                 sum: (state.sum = payload),
-            };
-        case types.ORDER_ADD_SUM:
-            return {
-                ...state,
-                order_sum: state.order_sum + payload,
-            };
-        case types.ORDER_DELETE_SUM:
-            return {
-                ...state,
-                order_sum: state.order_sum - payload,
-            };
-        case types.ORDER_CLEAR_SUM:
-            return {
-                ...state,
-                order_sum: (state.order_sum = payload),
             };
         case types.SET_CHECKED_OF_SERVICE:
             return {
@@ -123,14 +107,13 @@ export const servicesReducer = (state = initState, action) => {
                 }),
             };
         case types.SET_ADDITIONAL_OF_TOTAL:
-            console.log(payload);
             return {
                 ...state,
                 services: state.services.map(s => {
                     if (s._id === payload.serviceId) {
+                        let additPrice = utilMixin(payload.additionalPrice);
                         if (!!s.totalPrice === false) {
                             let servicePrice = utilMixin(s.price);
-                            let additPrice = utilMixin(payload.additionalPrice);
                             let resultPrice = servicePrice + additPrice;
                             return {
                                 ...s,
@@ -138,7 +121,6 @@ export const servicesReducer = (state = initState, action) => {
                             };
                         } else {
                             let servicePrice = utilMixin(s.totalPrice);
-                            let additPrice = utilMixin(payload.additionalPrice);
                             let resultPrice = servicePrice + additPrice;
                             return {
                                 ...s,
@@ -154,19 +136,22 @@ export const servicesReducer = (state = initState, action) => {
                 ...state,
                 services: state.services.map(s => {
                     if (s._id === payload.serviceId) {
-                        return {
-                            ...s,
-                            additional: s.additional.map(a => {
-                                let servicePrice = utilMixin(s.price);
-                                let additPrice = utilMixin(payload.additionalPrice);
-                                let resultPrice = servicePrice - additPrice;
-                                if (a._id === payload.additionalId) {
-                                    return { ...a, totalPrice: `$${resultPrice.toFixed(2)}` };
-                                } else {
-                                    return { ...a };
-                                }
-                            }),
-                        };
+                        let additPrice = utilMixin(payload.additionalPrice);
+                        if (!!s.totalPrice === false) {
+                            let servicePrice = utilMixin(s.price);
+                            let resultPrice = servicePrice - additPrice;
+                            return {
+                                ...s,
+                                totalPrice: `$${resultPrice.toFixed(2)}`,
+                            };
+                        } else {
+                            let servicePrice = utilMixin(s.totalPrice);
+                            let resultPrice = servicePrice - additPrice;
+                            return {
+                                ...s,
+                                totalPrice: `$${resultPrice.toFixed(2)}`,
+                            };
+                        }
                     }
                     return { ...s };
                 }),

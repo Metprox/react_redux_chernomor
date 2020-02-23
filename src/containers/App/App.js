@@ -1,7 +1,8 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-import cls from './App.scss';
 import MainRouter from '@/routers/MainRouter/MainRouter';
+
+import cls from './App.scss';
 
 const App = () => (
     <div className={cls.App}>

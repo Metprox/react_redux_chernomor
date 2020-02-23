@@ -5,25 +5,26 @@ import Header from '../../components/UI/Header/Header';
 import Total from '../../components/UI/Total/Total';
 import Button from '../../components/UI/Button/Button';
 import Sum from '../../components/UI/Sum/Sum';
-import OrderList from '../OrderList/OrderList';
-import { setSum, orderClearSum } from '@/store/actions/services';
-import { utilMixin } from '@/tools/custom/Functions.js';
+import AdditionalList from '../AdditionalList/AdditionalList';
+import { setSum } from '@/store/actions/services';
 
-import cls from './Order.scss';
+import cls from './Additional.scss';
 
-const Order = ({ services, sum, order_sum, setSum, orderClearSum }) => {
+const Additional = ({ services, setSum }) => {
     const { id } = useParams();
-    const [servicePrice, setServicePrice] = useState('');
     const [additional, setAdditional] = useState([]);
+    const [servicePrice, setServicePrice] = useState('');
+    const [serviceTotalPrice, setServiceTotalPrice] = useState('');
 
     useEffect(() => {
         let service = services.find(s => s._id === id);
         setAdditional(service.additional);
-        setServicePrice(utilMixin(service.price));
-    }, [id, servicePrice, services]);
+        setServicePrice(service.price);
+        setServiceTotalPrice(service.totalPrice);
+    }, [id, services, servicePrice, serviceTotalPrice]);
 
     return (
-        <div className={cls.Order}>
+        <div className={cls.Additional}>
             <Header />
             <div className={cls.wrap}>
                 <div className={cls.description}>
@@ -39,14 +40,13 @@ const Order = ({ services, sum, order_sum, setSum, orderClearSum }) => {
                         ))}
                     </p>
                 </div>
-                <OrderList additional={additional} />
-                <Total sum={servicePrice} />
+                <AdditionalList additional={additional} />
+                <Total sum={serviceTotalPrice || servicePrice} />
                 <Button
                     text="Confirm"
                     to="/"
                     onClick={() => {
-                        setSum(order_sum);
-                        orderClearSum(0);
+                        console.log('confirm')
                     }}
                 />
             </div>
@@ -58,15 +58,13 @@ const mapStateToProps = state => {
     return {
         services: state.servicesReducer.services,
         sum: state.servicesReducer.sum,
-        order_sum: state.servicesReducer.order_sum,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         setSum: sum => dispatch(setSum(sum)),
-        orderClearSum: sum => dispatch(orderClearSum(sum)),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Order);
+export default connect(mapStateToProps, mapDispatchToProps)(Additional);

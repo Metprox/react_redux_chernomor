@@ -9,7 +9,6 @@ import Arrow from '@/components/UI/Arrow/Arrow';
 import {
     addSum,
     deleteSum,
-    orderAddSum,
     setCheckedOfService,
     deleteCheckedOfService,
     setCountOfService,
@@ -22,8 +21,6 @@ const ServicesList = ({
     services,
     addSum,
     deleteSum,
-    orderAddSum,
-    sum,
     addResult,
     deleteResult,
     addCountResult,
@@ -77,20 +74,17 @@ const ServicesList = ({
                                 setCountOfService(s._id);
                             }}
                             onDecrement={() => {
-                                deleteResult(s._id);
-                                deleteCountResult(s._id);
+                                if (!!s.checked === false) {
+                                    deleteResult(s._id);
+                                }
                                 deleteCountOfService(s._id);
+                                deleteCountResult(s._id);
                             }}
                         />
                         <div className={cls.wrapPrice}>
                             <Price price={s.price} />
                         </div>
-                        <Arrow
-                            id={s._id}
-                            onClick={() => {
-                                orderAddSum(sum);
-                            }}
-                        />
+                        <Arrow id={s._id} />
                     </div>
                 </li>
             ))}
@@ -106,7 +100,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     addSum: sum => dispatch(addSum(sum)),
     deleteSum: sum => dispatch(deleteSum(sum)),
-    orderAddSum: sum => dispatch(orderAddSum(sum)),
     addResult: result => dispatch(addResult(result)),
     deleteResult: result => dispatch(deleteResult(result)),
     deleteCountResult: id => dispatch(deleteCountResult(id)),

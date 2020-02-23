@@ -7,7 +7,7 @@ const Sum = ({ sum, color }) => {
         if (typeof sum === 'number') {
             return `$ ${sum.toFixed(2)}`;
         } else if (sum) {
-            return `$ ${sum}`;
+            return `${sum}`;
         }
     };
 
